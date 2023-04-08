@@ -3,6 +3,20 @@ import NewzItem from "./NewzItem";
 import Loading from "./Loading";
 
 export default class Newz extends Component {
+
+  static defaultProps = {
+    country:'in',
+    pageSize:5,
+    category:'sports'
+  }
+
+  // static propTypes = {
+  //   country: PropTypes.string,
+  //   pageSize: PropTypes.number,
+  //   category: PropTypes.string,
+
+  // }
+
   constructor() {
     super();
     this.state = {
@@ -13,7 +27,7 @@ export default class Newz extends Component {
   }
 
   async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=9558a4b105fb44058d0a6e640c028158&page=1&pageSize=${this.props.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9558a4b105fb44058d0a6e640c028158&page=1&pageSize=${this.props.pageSize}`;
     this.setState({loading:true})
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -25,7 +39,7 @@ export default class Newz extends Component {
   }
 
   handlePrevClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=9558a4b105fb44058d0a6e640c028158&page=${
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9558a4b105fb44058d0a6e640c028158&page=${
       this.state.page - 1
     }&pageSize=${this.props.pageSize}`;
     this.setState({ loading: true });
@@ -45,7 +59,7 @@ export default class Newz extends Component {
         Math.ceil(this.state.totalResults / this.props.pageSize)
       )
     ) {
-      let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=9558a4b105fb44058d0a6e640c028158&page=${
+      let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9558a4b105fb44058d0a6e640c028158&page=${
         this.state.page + 1
       }&pageSize=${this.props.pageSize}`;
       this.setState({ loading: true });
