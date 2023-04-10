@@ -17,13 +17,18 @@ export default class Newz extends Component {
 
   // }
 
-  constructor() {
-    super();
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  constructor(props) {
+    super(props);
     this.state = {
       articles: [],
       loading: false,
       page: 1,
     };
+    document.title = `${this.capitalizeFirstLetter(this.props.category)} - Newz Monkey`;
   }
 
   async updateNewz(){
@@ -64,7 +69,7 @@ export default class Newz extends Component {
   render() {
     return (
       <div className="container my-3">
-        <h2 className="text-center">Newz Monkey - Top Headlines</h2>
+        <h2 className="text-center">Newz Monkey - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h2>
         {this.state.loading && <Loading />}
         <div className="row">
           {!this.state.loading && this.state.articles.map((article) => {
