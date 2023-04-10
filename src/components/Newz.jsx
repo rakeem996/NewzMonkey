@@ -26,8 +26,10 @@ export default class Newz extends Component {
     };
   }
 
-  async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9558a4b105fb44058d0a6e640c028158&page=1&pageSize=${this.props.pageSize}`;
+  async updateNewz(){
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9558a4b105fb44058d0a6e640c028158&page=1&pageSize=${this.props.pageSize}&page=${
+      this.state.page
+    }`;
     this.setState({loading:true})
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -38,18 +40,13 @@ export default class Newz extends Component {
     });
   }
 
+  async componentDidMount() {
+    this.updateNewz();
+  }
+
   handlePrevClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9558a4b105fb44058d0a6e640c028158&page=${
-      this.state.page - 1
-    }&pageSize=${this.props.pageSize}`;
-    this.setState({ loading: true });
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    this.setState({
-      page: this.state.page - 1,
-      articles: parsedData.articles,
-      loading: false,
-    });
+    this.setState({page:this.state.page - 1});
+    this.updateNewz();
   };
 
   handleNextClick = async () => {
@@ -59,17 +56,8 @@ export default class Newz extends Component {
         Math.ceil(this.state.totalResults / this.props.pageSize)
       )
     ) {
-      let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9558a4b105fb44058d0a6e640c028158&page=${
-        this.state.page + 1
-      }&pageSize=${this.props.pageSize}`;
-      this.setState({ loading: true });
-      let data = await fetch(url);
-      let parsedData = await data.json();
-      this.setState({
-        page: this.state.page + 1,
-        articles: parsedData.articles,
-        loading: false,
-      });
+      this.setState({page:this.state.page + 1});
+      this.updateNewz();
     }
   };
 
@@ -87,6 +75,9 @@ export default class Newz extends Component {
                   description={article.description}
                   imageURL={article.urlToImage}
                   newsURL={article.url}
+                  author={article.author}
+                  date={article.publishedAt}
+                  source={article.source.name}
                 />
               </div>
             );
@@ -102,7 +93,7 @@ export default class Newz extends Component {
             {" "}
             &larr; Previous
           </button>
-          {!this.state.loading && <p>Page {this.state.page}/{Math.ceil(this.state.totalResults / this.props.pageSize)}</p>}
+          {!this.state.loading && <p>Page <strong>{this.state.page}</strong>/{Math.ceil(this.state.totalResults / this.props.pageSize)}</p>}
           <button
             disabled={
               this.state.page + 1 >
