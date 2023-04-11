@@ -38,7 +38,7 @@ export default class Newz extends Component {
 
   async updateNewz() {
     this.props.setProgress(0)
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9558a4b105fb44058d0a6e640c028158&pageSize=${this.props.pageSize}&page=${this.state.page}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&pageSize=${this.props.pageSize}&page=${this.state.page}`;
     this.setState({ loading: true });
     this.props.setProgress(30)
     let data = await fetch(url);
@@ -58,7 +58,7 @@ export default class Newz extends Component {
 
   fetchMoreData = async () => {
     this.setState({ page: this.state.page + 1 });
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9558a4b105fb44058d0a6e640c028158&pageSize=${this.props.pageSize}&page=${this.state.page + 1}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&pageSize=${this.props.pageSize}&page=${this.state.page + 1}`;
     console.log(this.state.page)
     this.setState({ loading: true });
     let data = await fetch(url);
@@ -73,8 +73,8 @@ export default class Newz extends Component {
     return (
       <>
       {<Loading /> && this.state.loading}
-        <h2 className="text-center my-3">
-          Newz Monkey - Top {this.capitalizeFirstLetter(this.props.category)}{" "}
+        <h2 className="text-center my-3" >
+          <span className="text-primary" style={{fontFamily: 'DynaPuff'}}>Newz Monkey </span> - Top {this.capitalizeFirstLetter(this.props.category)}{" "}
           Headlines
         </h2>
         <InfiniteScroll

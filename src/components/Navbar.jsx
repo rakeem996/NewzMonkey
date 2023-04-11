@@ -7,8 +7,8 @@ export default class Navbar extends Component {
       <div>
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
           <div className="container-fluid">
-            <Link className="navbar-brand text-primary" to="/">
-              Newz Monkey
+            <Link className="navbar-brand text-primary" to="/" style={{fontFamily: 'DynaPuff'}}>
+               Newz Monkey
             </Link>
             <button
               class="navbar-toggler"
