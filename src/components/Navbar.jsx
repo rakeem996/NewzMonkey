@@ -11,7 +11,7 @@ export default class Navbar extends Component {
               Newz Monkey
             </Link>
             <button
-              className="navbar-toggler"
+              class="navbar-toggler"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarSupportedContent"
@@ -19,7 +19,7 @@ export default class Navbar extends Component {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span className="navbar-toggler-icon"></span>
+              <span class="navbar-toggler-icon"></span>
             </button>
             <div
               className="collapse navbar-collapse"
@@ -41,11 +41,6 @@ export default class Navbar extends Component {
                     Entertainment
                   </Link>
                 </li>
-                {/* <li className="nav-item">
-                  <Link className="nav-link" to="/general">
-                    General
-                  </Link>
-                </li> */}
                 <li className="nav-item">
                   <Link className="nav-link" to="/health">
                     Health

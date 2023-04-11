@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import NewzItem from "./NewzItem";
 import Loading from "./Loading";
 import InfiniteScroll from "react-infinite-scroll-component";
+import PropTypes from "prop-types"
 // import "../index.css"
 
 export default class Newz extends Component {
@@ -10,6 +11,13 @@ export default class Newz extends Component {
     pageSize: 5,
     category: "sports",
   };
+
+  static propTypes = {
+    country: PropTypes.string,
+    pageSize: PropTypes.number,
+    category: PropTypes.string
+  }
+
 
   capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -29,14 +37,19 @@ export default class Newz extends Component {
   }
 
   async updateNewz() {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9558a4b105fb44058d0a6e640c028158&page=1&pageSize=${this.props.pageSize}&page=${this.state.page}`;
+    this.props.setProgress(0)
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9558a4b105fb44058d0a6e640c028158&pageSize=${this.props.pageSize}&page=${this.state.page}`;
     this.setState({ loading: true });
+    this.props.setProgress(30)
     let data = await fetch(url);
+    this.props.setProgress(50)
     let parsedData = await data.json();
+    this.props.setProgress(70)
     this.setState({
       articles: parsedData.articles,
       totalResults: parsedData.totalResults,
     });
+    this.props.setProgress(100)
   }
 
   async componentDidMount() {
@@ -44,8 +57,9 @@ export default class Newz extends Component {
   }
 
   fetchMoreData = async () => {
-    this.setState({ pages: this.state.page + 1 });
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9558a4b105fb44058d0a6e640c028158&page=1&pageSize=${this.props.pageSize}&page=${this.state.page}`;
+    this.setState({ page: this.state.page + 1 });
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9558a4b105fb44058d0a6e640c028158&pageSize=${this.props.pageSize}&page=${this.state.page + 1}`;
+    console.log(this.state.page)
     this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -71,9 +85,9 @@ export default class Newz extends Component {
         >
           <div className="container">
             <div className="row">
-              {this.state.articles.map((article) => {
+              {this.state.articles.map((article,idx) => {
                 return (
-                  <div className="col-md-4" key={article.url}>
+                  <div className="col-md-4" key={idx}>
                     <NewzItem
                       title={article.title}
                       description={article.description}

@@ -1,3 +1,4 @@
 .ReactModal__Body--open {
-    overflow: hidden;
+    overflow: visible;
+    position: relative;
   }
